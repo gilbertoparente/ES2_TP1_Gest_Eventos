@@ -142,5 +142,81 @@ namespace Backend.Controllers
         {
             return (_context.Participantes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        
+        
+           
+    [HttpPost("login")]
+    public async Task<ActionResult<dynamic>> Login(LoginModel loginModel)
+    {
+        var participante = await _context.Participantes.FirstOrDefaultAsync(p => p.Email == loginModel.Email);
+
+        if (participante == null)
+        {
+            return NotFound();
+        }
+
+        //if (!VerifyPasswordHash(loginModel.Senha, participante.SenhaHash, participante.SenhaSalt))
+        //{
+           // return Unauthorized();
+      //  }
+
+       // var token = GenerateJwtToken(participante);
+
+        return new
+        {
+            participante.Id,
+            participante.Nome,
+            participante.Email,
+           // Token = token
+        };
     }
+    
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Senha { get; set; }
+    }
+
+    private bool VerifyPasswordHash(string senha, byte[] senhaHash, byte[] senhaSalt)
+    {
+        using (var hmac = new System.Security.Cryptography.HMACSHA512(senhaSalt))
+        {
+            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(senha));
+
+            for (int i = 0; i < computedHash.Length; i++)
+            {
+                if (computedHash[i] != senhaHash[i])
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+   // private string GenerateJwtToken(Participante participante)
+   // {
+       // var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+       // var key = Encoding.ASCII.GetBytes("SuaChaveSecretaAqui"); // Substitua pela sua chave secreta
+       // var tokenDescriptor = new System.IdentityModel.Tokens.SecurityTokenDescriptor
+       // {
+         //   Subject = new System.Security.Claims.ClaimsIdentity(new[]
+          //  {
+           //     new System.Security.Claims.Claim("id", participante.Id.ToString()),
+          //      new System.Security.Claims.Claim("email", participante.Email)
+         //   }),
+         //   Expires = DateTime.UtcNow.AddDays(7),
+          //  SigningCredentials = new System.IdentityModel.Tokens.SigningCredentials(new System.IdentityModel.Tokens.SymmetricSecurityKey(key),
+          //      System.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature)
+      //  };
+
+        //var token = tokenHandler.CreateToken(tokenDescriptor);
+        //return tokenHandler.WriteToken(token);
+   // }
+        
+    }
+ 
+
+
 }
