@@ -88,6 +88,9 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.Nome)
                 .HasMaxLength(100)
                 .HasColumnName("nome");
+            entity.Property(e => e.password)
+                .HasMaxLength(100)
+                .HasColumnName("nome");
             entity.Property(e => e.Telefone)
                 .HasMaxLength(20)
                 .HasColumnName("telefone");
