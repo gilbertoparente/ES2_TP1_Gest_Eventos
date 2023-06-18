@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ namespace Backend.Controllers
                     p.Id,
                     p.Nome,
                     p.Email,
+                    p.password,
                     p.Telefone,
                     Inscricoes = p.Inscricos.Select(i => new
                     {
@@ -142,5 +144,7 @@ namespace Backend.Controllers
         {
             return (_context.Participantes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
     }
 }
+    

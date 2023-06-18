@@ -12,6 +12,8 @@ public partial class Participante
     public string? Nome { get; set; }
 
     public string? Email { get; set; }
+    
+    public string? password { get; set; }
 
     public string? Telefone { get; set; }
 
